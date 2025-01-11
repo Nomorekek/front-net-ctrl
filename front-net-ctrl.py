@@ -133,22 +133,36 @@ def main():
         A tool for initializing MPTCP in Linux environments and controlling
         network interface bandwidth. Supports MPTCP client/server configuration for one 
         subflow (e.g. Terrestrial+Satellite) and bandwidth management using traffic control (tc).
+        
+        Mode-specific parameters:
+          bandwidth:     Requires --iface1, --bw1, --iface2, --bw2
+          mptcp-client: No additional parameters required
+          mptcp-server: Requires --subflow-ip, --subflow-iface
+        
+        Examples:
+          ./front-net-ctrl -m bandwidth --iface1 eth0 --bw1 100 --iface2 eth1 --bw2 50
+          ./front-net-ctrl -m mptcp-client
+          ./front-net-ctrl -m mptcp-server --subflow-ip 192.168.1.100 --subflow-iface eth0
         """,
         formatter_class=argparse.RawDescriptionHelpFormatter
     )
     
-    # Add mode argument with -m flag
+    # Mode argument
     parser.add_argument('-m', '--mode', required=True,
                        choices=['bandwidth', 'mptcp-client', 'mptcp-server'],
                        help='Operation mode (required)')
     
-    # Make bandwidth-related arguments optional
-    parser.add_argument('--iface1', help='First network interface (required for bandwidth mode)')
-    parser.add_argument('--bw1', help='Bandwidth for first interface in Mbits (required for bandwidth mode)')
-    parser.add_argument('--iface2', help='Second network interface (required for bandwidth mode)')
-    parser.add_argument('--bw2', help='Bandwidth for second interface in Mbits (required for bandwidth mode)')
-    parser.add_argument('--subflow-ip', help='Subflow IP address (required for mptcp-server mode)')
-    parser.add_argument('--subflow-iface', help='Subflow interface (required for mptcp-server mode)')
+    # Bandwidth mode arguments
+    bandwidth_group = parser.add_argument_group('Bandwidth mode parameters')
+    bandwidth_group.add_argument('--iface1', help='First network interface')
+    bandwidth_group.add_argument('--bw1', help='Bandwidth for first interface in Mbits')
+    bandwidth_group.add_argument('--iface2', help='Second network interface')
+    bandwidth_group.add_argument('--bw2', help='Bandwidth for second interface in Mbits')
+    
+    # MPTCP server mode arguments
+    server_group = parser.add_argument_group('MPTCP server mode parameters')
+    server_group.add_argument('--subflow-ip', help='Subflow IP address')
+    server_group.add_argument('--subflow-iface', help='Subflow interface')
     
     args = parser.parse_args()
     
