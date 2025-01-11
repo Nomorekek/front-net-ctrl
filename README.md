@@ -15,9 +15,9 @@ This tool provides functionality for:
 
 ## Usage
 
-    ./front-net-ctrl -m bandwidth --iface1 eth0 --bw1 100 --iface2 eth1 --bw2 50
-    ./front-net-ctrl -m mptcp-client
-    ./front-net-ctrl -m mptcp-server --subflow-ip 192.168.2.100 --subflow-iface eth0
+    python3 front-net-ctrl.py -m bandwidth --iface1 eth0 --bw1 100 --iface2 eth1 --bw2 50
+    python3 front-net-ctrl.py -m mptcp-client
+    python3 front-net-ctrl.py -m mptcp-server --subflow-ip 192.168.2.100 --subflow-iface eth0
 
 ## Testing
 
