@@ -44,7 +44,7 @@ import sys
 def configure_interface(iface, bandwidth):
     # Try to change existing qdisc first
     change_cmd = ['tc', 'qdisc', 'change', 'dev', iface, 'root', 'tbf',
-                  'rate', f'{bandwidth}mbit', 'burst', '256mbit', 'latency', '600ms']
+                  'rate', f'{bandwidth}mbit', 'burst', '32kb', 'latency', '600ms']
     
     try:
         result = subprocess.run(change_cmd, capture_output=True, text=True)
@@ -56,7 +56,7 @@ def configure_interface(iface, bandwidth):
 
     # If change failed, try to add new qdisc
     add_cmd = ['tc', 'qdisc', 'add', 'dev', iface, 'root', 'tbf',
-               'rate', f'{bandwidth}mbit', 'burst', '256mbit', 'latency', '600ms']
+               'rate', f'{bandwidth}mbit', 'burst', '32kb', 'latency', '600ms']
     
     try:
         result = subprocess.run(add_cmd, capture_output=True, text=True)
